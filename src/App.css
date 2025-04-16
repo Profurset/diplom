@@ -1,0 +1,94 @@
+/* App.css */
+
+/* Глобальные настройки */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f9f9f9;
+  color: #333;
+}
+
+/* Заголовки */
+h1, h2, h3 {
+  color: #5c6bc0;
+  font-weight: bold;
+  text-align: center;
+}
+
+p {
+  color: #555;
+  line-height: 1.6;
+}
+
+/* Контейнеры */
+.container {
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Центрирование контента */
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Кнопки */
+.btn {
+  background-color: #5c6bc0;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  text-transform: uppercase;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.btn:hover {
+  background-color: #3f51b5;
+}
+
+/* Анимации */
+.fade-in {
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
+}
+
+.fade-in.visible {
+  opacity: 1;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+  .container {
+    padding: 10px;
+  }
+
+  h1, h2 {
+    font-size: 1.5rem;
+  }
+}
+
+.center-container {
+  display: flex;
+  flex-direction: column; /* Содержимое выстраивается вертикально */
+  justify-content: center; /* Центрирование по вертикали */
+  align-items: center; /* Центрирование по горизонтали */
+  min-height: 100vh; /* Чтобы контейнер занимал всю высоту экрана */
+  padding: 20px; /* Отступы для удобства просмотра */
+  box-sizing: border-box; /* Учитываем padding в размерах элемента */
+}
+
+/* Для адаптивности */
+@media (max-width: 768px) {
+  .center-container {
+    padding: 10px; /* Уменьшаем отступы на маленьких экранах */
+  }
+}

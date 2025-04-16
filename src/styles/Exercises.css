@@ -1,0 +1,36 @@
+/* Exercises.css */
+
+.options-container {
+    display: flex;
+    gap: 10px;
+    margin: 10px 0;
+}
+
+.option-btn {
+    padding: 10px 20px;
+    background-color: #f0f0f0;
+    color: #333;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.option-btn:hover {
+    background-color: #d0d0d0;
+}
+
+.option-btn.selected {
+    background-color: #5c6bc0;
+    color: white;
+}
+
+.option-btn.selected:hover {
+    background-color: #3f51b5;
+}
+
+.option-btn:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
