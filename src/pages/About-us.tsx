@@ -1,21 +1,40 @@
-
 import "../styles/About-us.css";
 
 const AboutUs = () => {
     return (
-        <div className="about-us-container">
-            <h2>О нас</h2>
-            <p>
-                Привет! Меня зовут [Ваше имя], и я создал этот образовательный ресурс для детей младшего школьного возраста.
-            </p>
-            <img src="path/to/your/photo.jpg" alt="Фото создателя" className="creator-image" />
-            <div className="social-links">
-                <a href="https://vk.com" target="_blank" rel="noopener noreferrer">
-                    <i className="fa-brands fa-vk"></i>
-                </a>
-                <a href="https://telegram.org" target="_blank" rel="noopener noreferrer">
-                    <i className="fa-brands fa-telegram"></i>
-                </a>
+        <div className="about-container">
+            <h2>О НАС</h2>
+            <div className="text-block">
+                <p>
+                    Добро пожаловать в образовательный проект «Мир Знаний» - место, где дети открывают для себя радость обучения.
+                    Мы создаем уникальные развивающие материалы, которые делают процесс познания увлекательным и эффективным.
+                </p>
+
+                <p>
+                    Наша миссия - помочь каждому ребенку раскрыть свой потенциал через игровое обучение и интерактивные методики.
+                    Мы верим, что правильный подход к образованию формирует не только знания, но и характер.
+                </p>
+            </div>
+
+            <div className="creator-section">
+                <img src="../src/assets/dima.jpg" alt="Создатель" className="creator-image" />
+                <div className="creator-info">
+                    <h3 className="creator-name">Выродов Дмитрий Николаевич</h3>
+                    <p className="position">Основатель и идейный вдохновитель «Мир Знаний»</p>
+                    <div className="text-block">
+                        <p className="quote">
+                            "Моя цель - создать образовательную среду, где дети будут учиться с удовольствием,
+                            а родители - видеть реальный прогресс в развитии своего ребенка"
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div className="text-block">
+                <p>
+                    В «Мире Знаний» мы постоянно работаем над улучшением наших программ, учитывая последние тенденции в педагогике
+                    и психологии детского развития. Наши материалы проходят тестирование с участием детей и экспертов.
+                </p>
             </div>
         </div>
     );

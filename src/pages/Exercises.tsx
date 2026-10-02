@@ -1,189 +1,265 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import "../styles/Exercises.css";
-import correctSound from "../assets/correct.mp3"; // Звук для правильного ответа
-import wrongSound from "../assets/wrong.mp3"; // Звук для неправильного ответа
+import { auth } from "../firebaseConfig";
+import { updateExerciseProgress } from "../firebaseFirestore";
+import correctSound from "../assets/correct.mp3";
+import wrongSound from "../assets/wrong.mp3";
 
 const Exercises = () => {
-    const [difficulty, setDifficulty] = useState("easy"); // Уровень сложности
-    const [question, setQuestion] = useState<string>(""); // Текущий пример
-    const [answer, setAnswer] = useState<number | null>(null); // Правильный ответ
-    const [options, setOptions] = useState<number[]>([]); // Варианты ответов
-    const [selectedOption, setSelectedOption] = useState<number | null>(null); // Выбранный вариант
-    const [correctAnswers, setCorrectAnswers] = useState(0); // Количество правильных ответов
-    const [wrongAnswers, setWrongAnswers] = useState(0); // Количество неправильных ответов
-    const [timeLeft, setTimeLeft] = useState(10); // Таймер (10 секунд)
-    const [gameOver, setGameOver] = useState(false); // Конец игры
-    const [isStarted, setIsStarted] = useState(false); // Статус запуска тренажёра
+    const [selectedTopic, setSelectedTopic] = useState<string | null>(null);
+    const [question, setQuestion] = useState<string>("");
+    const [answer, setAnswer] = useState<number | null>(null);
+    const [options, setOptions] = useState<number[]>([]);
+    const [correctAnswers, setCorrectAnswers] = useState(0);
+    const [wrongAnswers, setWrongAnswers] = useState(0);
+    const [timeLeft, setTimeLeft] = useState(10);
+    const [gameOver, setGameOver] = useState(false);
+    const [isStarted, setIsStarted] = useState(false);
+    const [isAnswered, setIsAnswered] = useState(false);
+    const [showExitModal, setShowExitModal] = useState(false);
 
-    // Генерация случайного примера
-    const generateQuestion = () => {
-        const num1 = Math.floor(Math.random() * 20) + 1;
-        const num2 = Math.floor(Math.random() * 20) + 1;
+    const MAX_QUESTIONS = 10;
 
-        // Определяем доступные операции в зависимости от уровня сложности
-        const operations =
-            difficulty === "easy"
-                ? ["+", "-"] as const
-                : difficulty === "medium"
-                    ? ["*", "/"] as const
-                    : ["+", "-", "*", "/"] as const;
+    const generateQuestion = useCallback(() => {
+        let num1: number, num2: number, x: number, a: number, b: number, result: number;
 
-        const operation = operations[Math.floor(Math.random() * operations.length)];
-
-        let result: number;
-
-        if (operation === "+") result = num1 + num2;
-        else if (operation === "-") result = num1 - num2;
-        else if (operation === "*") result = num1 * num2;
-        else result = Math.floor(num1 / num2);
-
-        // Генерируем три варианта ответов (один правильный и два случайных)
-        const otherOptions: number[] = [];
-        while (otherOptions.length < 2) {
-            const randomAnswer = Math.floor(Math.random() * 40) - 10; // Случайное число
-            if (!otherOptions.includes(randomAnswer) && randomAnswer !== result) {
-                otherOptions.push(randomAnswer);
-            }
+        switch (selectedTopic) {
+            case "addition-no-carry":
+                num1 = Math.floor(Math.random() * 10);
+                num2 = Math.floor(Math.random() * (10 - num1));
+                result = num1 + num2;
+                setQuestion(`${num1} + ${num2} = ?`);
+                break;
+            case "addition-with-carry":
+                num1 = Math.floor(Math.random() * 20) + 10;
+                num2 = Math.floor(Math.random() * 20) + 10;
+                result = num1 + num2;
+                setQuestion(`${num1} + ${num2} = ?`);
+                break;
+            case "multiplication-table":
+                num1 = Math.floor(Math.random() * 10) + 1;
+                num2 = Math.floor(Math.random() * 10) + 1;
+                result = num1 * num2;
+                setQuestion(`${num1} × ${num2} = ?`);
+                break;
+            case "equate":
+                x = Math.floor(Math.random() * 10) + 1;
+                a = Math.floor(Math.random() * 10) + 1;
+                b = x + a;
+                result = x;
+                setQuestion(`x + ${a} = ${b}`);
+                break;
+            default:
+                return;
         }
 
-        const allOptions = [...otherOptions, result];
-        allOptions.sort(() => Math.random() - 0.5); // Перемешиваем варианты
-
-        setQuestion(`${num1} ${operation} ${num2} = ?`);
         setAnswer(result);
-        setOptions(allOptions);
-        setSelectedOption(null);
-        setTimeLeft(10); // Сброс таймера
-    };
 
-    // Проверка ответа
+        const fakeOptions = new Set<number>();
+        while (fakeOptions.size < 2) {
+            const val = result + Math.floor(Math.random() * 10 - 5);
+            if (val !== result && val > 0) fakeOptions.add(val);
+        }
+
+        const mixedOptions = [...fakeOptions, result].sort(() => Math.random() - 0.5);
+        setOptions(mixedOptions);
+        setTimeLeft(10);
+    }, [selectedTopic]);
+
     const checkAnswer = (option: number) => {
-        setSelectedOption(option); // Отмечаем выбранный вариант
+        if (isAnswered) return;
+
+        let newCorrect = correctAnswers;
+        let newWrong = wrongAnswers;
 
         if (option === answer) {
-            setCorrectAnswers((prev) => prev + 1);
-            playSound(correctSound).catch((error) => console.error(error)); // Проигрываем положительный звук
+            newCorrect++;
+            setCorrectAnswers(newCorrect);
+            new Audio(correctSound).play().catch(() => {});
         } else {
-            setWrongAnswers((prev) => prev + 1);
-            playSound(wrongSound).catch((error) => console.error(error)); // Проигрываем отрицательный звук
+            newWrong++;
+            setWrongAnswers(newWrong);
+            new Audio(wrongSound).play().catch(() => {});
         }
 
-        // Условие окончания игры
-        if (wrongAnswers >= 5 || correctAnswers >= 15) {
-            setGameOver(true);
-        } else {
-            setTimeout(generateQuestion, 1000); // Генерируем новый вопрос через секунду
-        }
+        setIsAnswered(true);
+
+        setTimeout(() => {
+            setIsAnswered(false);
+            if (newCorrect >= MAX_QUESTIONS || newWrong >= 3) {
+                setGameOver(true);
+            } else {
+                generateQuestion();
+            }
+        }, 1500);
     };
 
-    // Логика таймера
     useEffect(() => {
-        if (!isStarted || gameOver) return; // Если тренажёр не запущен или игра окончена, ничего не делаем
+        if (!isStarted || gameOver || !selectedTopic) return;
 
         const timer = setTimeout(() => {
-            if (timeLeft > 0 && !gameOver) {
+            if (timeLeft > 0) {
                 setTimeLeft((prev) => prev - 1);
-            } else if (timeLeft === 0 && !gameOver) {
-                setWrongAnswers((prev) => prev + 1); // Штраф за истечение времени
-                playSound(wrongSound).catch((error) => console.error(error)); // Проигрываем отрицательный звук
-                generateQuestion(); // Переходим к следующему вопросу
+            } else {
+                setWrongAnswers((prev) => prev + 1);
+                generateQuestion();
             }
         }, 1000);
 
-        return () => clearTimeout(timer); // Очищаем таймер при размонтировании компонента
-    }, [timeLeft, gameOver, isStarted]);
+        return () => clearTimeout(timer);
+    }, [timeLeft, gameOver, isStarted, selectedTopic, generateQuestion]);
 
-    // Проигрывание звука
-    const playSound = async (audioFile: string) => {
-        try {
-            const audio = new Audio(audioFile);
-            await audio.play();
-        } catch (error) {
-            console.error("Ошибка воспроизведения звука:", error);
+    useEffect(() => {
+        if (gameOver) {
+            const saveProgress = async () => {
+                const userId = auth.currentUser?.uid;
+                if (!userId || !selectedTopic) return;
+
+                const total = correctAnswers + wrongAnswers;
+                const percent = total > 0 ? Math.round((correctAnswers / total) * 100) : 0;
+
+                await updateExerciseProgress(userId, selectedTopic, percent);
+            };
+            saveProgress();
         }
-    };
+    }, [gameOver, correctAnswers, wrongAnswers, selectedTopic]);
 
-    // Начало тренажёра
-    const startGame = () => {
-        setIsStarted(true); // Запускаем тренажёр
-        generateQuestion(); // Генерируем первый вопрос
-    };
+    useEffect(() => {
+        if (selectedTopic && !isStarted && !gameOver) {
+            setIsStarted(true);
+            generateQuestion();
+        }
+    }, [selectedTopic, isStarted, gameOver, generateQuestion]);
 
-    // Сброс тренажёра
     const resetGame = () => {
-        setIsStarted(false); // Останавливаем тренажёр
-        setCorrectAnswers(0); // Сбрасываем счётчик правильных ответов
-        setWrongAnswers(0); // Сбрасываем счётчик неправильных ответов
-        setGameOver(false); // Сбрасываем флаг окончания игры
-        setSelectedOption(null); // Сбрасываем выбранный вариант
-        setQuestion(""); // Сбрасываем текущий пример
-        setAnswer(null); // Сбрасываем правильный ответ
+        setIsStarted(false);
+        setCorrectAnswers(0);
+        setWrongAnswers(0);
+        setGameOver(false);
+        setQuestion("");
+        setAnswer(null);
+        setIsAnswered(false);
+        setShowExitModal(false);
+        setTimeLeft(10);
+    };
+
+    const handleBack = () => {
+        setShowExitModal(true);
+    };
+
+    const confirmExit = () => {
+        setSelectedTopic(null);
+        resetGame();
+    };
+
+    const cancelExit = () => {
+        setShowExitModal(false);
     };
 
     return (
-        <div className="center-container">
-            <div className="exercises-container">
-                <h2>Тренажёр по математике</h2>
-                <div>
-                    <label>
-                        Выберите уровень сложности:
-                        <select value={difficulty} onChange={(e) => setDifficulty(e.target.value)}>
-                            <option value="easy">Легкий</option>
-                            <option value="medium">Средний</option>
-                            <option value="hard">Сложный</option>
-                        </select>
-                    </label>
+        <div className="exercises-container">
+            {!selectedTopic && (
+                <div className="topics-list">
+                    <h2>Выберите тему:</h2>
+                    <ul>
+                        <li>
+                            <button onClick={() => setSelectedTopic("addition-no-carry")} className="topic-btn">
+                                Сложение без перехода
+                            </button>
+                        </li>
+                        <li>
+                            <button onClick={() => setSelectedTopic("addition-with-carry")} className="topic-btn">
+                                Сложение с переходом
+                            </button>
+                        </li>
+                        <li>
+                            <button onClick={() => setSelectedTopic("multiplication-table")} className="topic-btn">
+                                Таблица умножения
+                            </button>
+                        </li>
+                        <li>
+                            <button onClick={() => setSelectedTopic("equate")} className="topic-btn">
+                                Уравнения x + a = b
+                            </button>
+                        </li>
+                    </ul>
                 </div>
+            )}
 
-                {/* Если тренажёр не запущен */}
-                {!isStarted && !gameOver && (
-                    <button onClick={startGame} className="btn">
-                        Начать тренажёр
-                    </button>
-                )}
-
-                {/* Если тренажёр запущен */}
-                {isStarted && !gameOver && (
-                    <>
-                        <p>{question}</p>
-                        <div className="options-container">
-                            {options.map((option) => (
-                                <button
-                                    key={option}
-                                    className={`option-btn ${
-                                        selectedOption === option ? "selected" : ""
-                                    }`}
-                                    disabled={selectedOption !== null}
-                                    onClick={() => checkAnswer(option)}
-                                >
-                                    {option}
-                                </button>
-                            ))}
-                        </div>
-                        <p>Осталось времени: {timeLeft} сек.</p>
-                        <p>
-                            Правильных ответов: {correctAnswers}, Неправильных: {wrongAnswers}
-                        </p>
-                    </>
-                )}
-
-                {/* Если игра окончена */}
-                {gameOver && (
-                    <div>
-                        <h3>Игра окончена!</h3>
-                        <p>
-                            {wrongAnswers >= 5
-                                ? "Вы допустили слишком много ошибок."
-                                : "Вы успешно прошли тренажёр!"}
-                        </p>
-                        <p>Правильных ответов: {correctAnswers}</p>
-                        <p>Неправильных ответов: {wrongAnswers}</p>
-                        <button onClick={resetGame} className="btn">
-                            Сыграть снова
+            {isStarted && !gameOver && (
+                <>
+                    <div className="back-button-container">
+                        <button className="back-button" onClick={handleBack}>
+                            Назад
                         </button>
                     </div>
-                )}
-            </div>
+
+                    <p className={`question fade-in ${isAnswered ? "answered" : ""}`}>{question}</p>
+                    <div className="options-container">
+                        {options.map((option, index) => (
+                            <button
+                                key={index}
+                                className={`option-btn fade-in ${
+                                    isAnswered && option === answer ? "correct" : ""
+                                } ${isAnswered && option !== answer ? "wrong" : ""}`}
+                                onClick={() => checkAnswer(option)}
+                                disabled={isAnswered}
+                            >
+                                {option}
+                            </button>
+                        ))}
+                    </div>
+                    <p className="timer">Осталось времени: {timeLeft} сек.</p>
+                    <p className="score">
+                        Правильных: {correctAnswers} | Ошибок: {wrongAnswers}
+                    </p>
+                </>
+            )}
+
+            {gameOver && (
+                <div className="game-over">
+                    <h3>Игра окончена!</h3>
+                    <p>{wrongAnswers >= 3 ? "Слишком много ошибок." : "Вы успешно прошли!"}</p>
+                    <p className="final-score">
+                        Правильных ответов: {correctAnswers} из {correctAnswers + wrongAnswers}
+                    </p>
+                    <p>
+                        Процент правильных:{" "}
+                        {Math.round((correctAnswers / (correctAnswers + wrongAnswers)) * 100)}%
+                    </p>
+
+                    <button onClick={resetGame} className="reset-btn">
+                        Сыграть снова
+                    </button>
+
+                    <button
+                        onClick={() => {
+                            setSelectedTopic(null);
+                            resetGame();
+                        }}
+                        className="return-topics-btn"
+                    >
+                        Вернуться к темам
+                    </button>
+                </div>
+            )}
+
+            {showExitModal && (
+                <div className="modal-overlay">
+                    <div className="modal-content">
+                        <h3>Вы точно хотите выйти?</h3>
+                        <p>Результат не сохранится.</p>
+                        <div className="modal-buttons">
+                            <button className="modal-btn confirm" onClick={confirmExit}>
+                                Да, выйти
+                            </button>
+                            <button className="modal-btn cancel" onClick={cancelExit}>
+                                Отмена
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

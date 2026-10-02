@@ -1,4 +1,3 @@
-// src/components/LazyImage.js
 import React, { useState } from 'react';
 
 const LazyImage = ({ src, alt, className }) => {

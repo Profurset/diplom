@@ -1,13 +1,91 @@
+/* Contact.css */
+
 .contact-container {
-    padding: 20px;
+    max-width: 600px;
+    margin: 10px auto;
+    padding: 30px;
     text-align: center;
+    color: #000000;
+    background-color: #f9f9f9;
+    font-family: Arial, sans-serif;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
-.contact-form input,
-.contact-form textarea {
+.contact-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     width: 100%;
-    padding: 10px;
-    margin: 10px 0;
+    margin-top: 25px;
+}
+
+.form-input,
+.form-textarea {
+    width: 100%;
+    max-width: 400px;
+    padding: 12px;
+    margin: 15px 0;
     border: 1px solid #ccc;
     border-radius: 5px;
+    font-size: 1rem;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+.contact-container input::placeholder,
+.contact-container textarea::placeholder {
+    color: #B7E3E4;
+    font-size: 1rem; /* Одинаковый размер шрифта */
+    opacity: 1; /* Убедимся, что цвет не прозрачный */
+}
+
+.form-input:focus,
+.form-textarea:focus {
+    border-color: #167C80;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(22, 124, 128, 0.2);
+}
+
+.form-textarea {
+    resize: none;
+    height: 120px;
+    margin-bottom: 25px;
+}
+
+.submit-btn {
+    padding: 12px 25px;
+    background-color: #167C80; /* Бирюзовый цвет */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 15px;
+}
+
+.submit-btn:hover {
+    background-color: #F03F35; /* Красный цвет при наведении */
+    transform: translateY(-2px); /* Лёгкий подъём кнопки */
+    box-shadow: 0 4px 8px rgba(240, 63, 53, 0.3); /* Тень при наведении */
+}
+
+.submit-btn:active {
+    transform: translateY(0); /* Эффект нажатия */
+    box-shadow: 0 2px 4px rgba(240, 63, 53, 0.3);
+}
+
+.contact-info {
+    margin-top: 30px;
+    text-align: center;
+    line-height: 1.6;
+}
+
+.contact-info p {
+    margin: 10px 0;
+}
+
+h2 {
+    margin-bottom: 20px;
+    color: #167C80;
 }

@@ -17,10 +17,10 @@ const Footer = () => {
 
                 {/* Социальные сети */}
                 <div className="footer-socials">
-                    <a href="https://vk.com" target="_blank" rel="noopener noreferrer" className="social-link">
+                    <a href="https://vk.com/s69s96s9s6s9s6s9ss9s6s99s6sss69s" target="_blank" rel="noopener noreferrer" className="social-link">
                         <i className="fa-brands fa-vk"></i>
                     </a>
-                    <a href="https://telegram.org" target="_blank" rel="noopener noreferrer" className="social-link">
+                    <a href="https://t.me/Profurset" target="_blank" rel="noopener noreferrer" className="social-link">
                         <i className="fa-brands fa-telegram"></i>
                     </a>
                 </div>

@@ -1,99 +1,165 @@
 /* Header.css */
 
-header {
+.header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 20px 40px;
     background-color: #ffffff;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    position: relative;
 }
 
 .header-container {
     display: flex;
-    justify-content: space-between;
     align-items: center;
     width: 100%;
+    max-width: 1500px;
+    margin: 0 auto;
+    justify-content: space-between; /* Добавляем это */
 }
 
+/* Логотип - остаётся слева */
 .logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-right: auto; /* Добавляем это */
+}
+
+.site-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #167C80;
+    text-decoration: none;
     font-size: 1.5rem;
     font-weight: bold;
-    color: #f80000;
-    text-decoration: none;
 }
 
+.site-title img {
+    width: 50px;
+    height: 50px;
+}
+
+/* Навигация по центру */
 .nav {
-    flex-grow: 1;
     display: flex;
-    justify-content: center;
+    position: absolute; /* Изменяем на absolute */
+    left: 50%; /* Центрируем */
+    transform: translateX(-50%); /* Центрируем */
 }
 
 .nav-items {
-    display: flex;
     list-style: none;
-    gap: 20px;
+    display: flex;
+    gap: 30px;
+    padding: 0;
+    margin: 0;
 }
 
 .nav-link {
     text-decoration: none;
-    color: #000000;
+    color: #000;
     font-size: 1rem;
     font-weight: 500;
-    transition: color 0.3s;
+    border: 2px solid #167C80;
+    padding: 8px 16px;
+    border-radius: 5px;
+    transition: all 0.3s ease;
 }
 
 .nav-link:hover {
-    color: #f80000;
+    background-color: #167C80;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
-.profile-container {
+/* Профиль — справа */
+.profile-section {
     position: relative;
+    cursor: pointer;
+    margin-left: auto; /* Добавляем это */
 }
 
 .profile-picture {
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    cursor: pointer;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    object-fit: cover;
+    border: 2px solid #167C80;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    transition: transform 0.2s ease;
 }
 
+.profile-picture:hover {
+    transform: scale(1.1);
+}
+
+/* Остальные стили остаются без изменений */
 .dropdown-menu {
     position: absolute;
     right: 0;
     top: 50px;
     background-color: #fff;
     border: 1px solid #ddd;
-    border-radius: 5px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    padding: 10px;
-    width: 150px;
-    z-index: 10;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    padding: 10px 0;
+    width: 180px;
+    z-index: 1000;
+    animation: fadeIn 0.3s ease-in-out;
 }
 
 .dropdown-link {
     display: block;
-    padding: 10px;
+    padding: 10px 15px;
     text-decoration: none;
-    color: #333;
+    color: #000000;
     font-size: 1rem;
     transition: background-color 0.3s;
 }
 
 .dropdown-link:hover {
-    background-color: #000000;
-    color: #fff;
+    background-color: #ffffff;
 }
 
-/* Адаптивность */
-@media (max-width: 768px) {
-    header {
-        flex-direction: column;
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
     }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
 
-    .nav-items {
-        flex-direction: column;
-        gap: 10px;
-    }
+.profile-section {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    position: relative;
+    margin-left: auto;
+}
+
+.user-name {
+    font-weight: 600;
+    color: #167C80;
+    white-space: nowrap;
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.profile-picture {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #167C80;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    transition: transform 0.2s ease;
+    cursor: pointer;
 }

@@ -1,89 +1,263 @@
-/* Home.css */
+.home-container {
+    font-family: "Jangaroo", sans-serif;
+    color: #000000;
+}
 
-.home-banner {
-    height: 100vh;
+.hero-section {
+    align-items: flex-start;
     display: flex;
     justify-content: center;
-    align-items: center;
-    color: #fff;
-    text-align: center;
-    padding: 0 20px;
-}
-
-.welcome-section {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+     /* Выравнивание всех элементов по центру по вертикали */
     gap: 20px;
-    max-width: 1200px;
-    margin: 0 auto;
-    background-color: rgba(255, 255, 255, 0.8); /* Полупрозрачный фон */
-    border-radius: 10px;
-    padding: 20px;
+    margin-bottom: 40px;
+    min-height: 400px; /* Фиксированная высота секции (опционально) */
 }
 
-.welcome-text {
+.hero-content {
     max-width: 50%;
-    color: #213547; /* Темный цвет текста */
-}
-
-.welcome-text h1 {
-    font-size: 2.5rem;
+    text-align: justify;  /* Выравнивание по ширине */
+    text-justify: inter-word;  /* Для лучшего выравнивания в большинстве браузеров */
+    hyphens: auto;  /* Автоматическое добавление переносов, если нужно */
     margin-bottom: 20px;
+    line-height: 1.6;
+    margin-top: 0;
 }
 
-.welcome-text p {
-    font-size: 1.2rem;
-    margin-bottom: 20px;
+.hero-image {
+    width: 30%;
+     /* Ограничение высоты изображения */
+    /* Сохраняет пропорции изображения */
+    border-radius: 10px;
+    align-self: center; /* Дополнительное выравнивание */
+    margin-top: 40px;
+    margin-left: 110px;
 }
 
-.btn {
-    display: inline-block;
-    background-color: #5c6bc0;
+.multiline-title {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* или flex-start для выравнивания по левому краю */
+}
+
+.hero-content p:last-of-type {
+    margin-bottom: 50px; /* Большой отступ перед кнопкой */
+}
+
+.features-section {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+.feature-card {
+    background-color: #B7E3E4;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+}
+
+.feature-card h3 {
+    font-size: 1.6rem;
+    margin-bottom: 10px;
+    color: #f03f35;
+}
+
+.feature-card p {
+    font-size: 1.1rem;
+    color: #f03f35;
+}
+
+
+/* Блок 3: Запись на курс */
+.signup-section {
+    text-align: center;
+}
+
+.btn-primary {
+
+    font-weight: bold;
+    width: 68%;
+    margin: 10px auto 20px;
+    display: block;
+    padding: 20px;
+    background-color: #167C80;
     color: white;
-    padding: 10px 20px;
-    border-radius: 5px;
-    text-decoration: none;
+    border: none;
+    border-radius: 10px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: #f03f35;
+}
+
+.btn-secondary {
+    background-color: #167C80;
+    color: white;
+    padding: 15px 30px;
+    border: none;
+    border-radius: 20px;
     font-size: 1rem;
+    cursor: pointer;
     transition: background-color 0.3s ease;
 }
 
-.btn:hover {
-    background-color: #3f51b5;
+.btn-secondary:hover {
+    background-color: #f03f35;
+}
+/* === Как это работает? === */
+.how-it-works-section,
+.courses-section,
+.testimonials-section {
+    text-align: center;
+    padding: 40px 20px;
 }
 
-.welcome-image {
+.steps-grid,
+.course-grid,
+.testimonial-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+
+.course-card1, .course-card2, .course-card3 {
     position: relative;
-    max-width: 45%;
-}
-
-.welcome-image img {
-    width: 100%;
+    background: white;
     border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    border: 2px solid transparent; /* Начальная тонкая рамка */
+    background:
+            linear-gradient(white, white) padding-box,
+            linear-gradient(to right, #167C80, #B7E3E4, #F03F35) border-box;
+    background-size: 100% 2px; /* Начальный размер градиента */
+    transition: all 0.3s ease;
 }
 
-.image-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
+.course-card1:hover, .course-card2:hover, .course-card3:hover {
+    border-width: 5px; /* Утолщаем рамку при наведении */
+    background-size: 100% 100%; /* Градиент на всю высоту */
+}
+
+.testimonial-card1, .testimonial-card2, .testimonial-card3 {
+    position: relative;
+    background: white;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    border: 2px solid transparent; /* Начальная тонкая рамка */
+    background:
+            linear-gradient(white, white) padding-box,
+            linear-gradient(to right, #167C80, #B7E3E4, #F03F35) border-box;
+    background-size: 100% 2px; /* Начальный размер градиента */
+    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.testimonial-card1:hover,
+.testimonial-card2:hover,
+.testimonial-card3:hover {
+    border-width: 4px; /* Утолщаем рамку при наведении */
+    background-size: 100% 100%; /* Градиент на всю высоту */
+    transform: translateY(-5px); /* Добавляем подъем карточки */
+}
+
+.step-card
+{
+    background-color: #ffffff;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease;
+}
+
+.step-card:hover,
+.course-card:hover,
+.testimonial-card:hover {
+    transform: translateY(-5px);
+}
+
+.step-number1 {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    border-radius: 50%;
+    background-color: #f03f35;
     color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 10px;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
-
-.welcome-image:hover .image-overlay {
-    opacity: 1;
-}
-
-.image-overlay p {
-    font-size: 1.5rem;
     font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.step-number2 {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    border-radius: 50%;
+    background-color: #f03f35;
+    color: white;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+.step-number3 {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    border-radius: 50%;
+    background-color: #f03f35;
+    color: white;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+.step-number4 {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    border-radius: 50%;
+    background-color: #f03f35;
+    color: white;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.signup-section {
+    text-align: center;
+    padding: 40px 20px;
+}
+
+.signup-form {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 15px;
+    flex-wrap: wrap;
+}
+
+.signup-form input[type="email"] {
+    padding: 10px 15px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    max-width: 300px;
+    width: 100%;
+}
+
+.signup-form button {
+    border-radius: 20px;
 }

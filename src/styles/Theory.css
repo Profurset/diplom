@@ -1,23 +1,57 @@
-/* Theory.css */
-
 .theory-container {
-    background-color: #fff;
-    padding: 30px;
+    max-width: 600px;
+    margin: 20px auto;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #fff;
     border-radius: 10px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    margin-top: 50px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 25px 30px;
 }
 
-.theory-container h2 {
-    font-size: 2.5rem;
-    margin-bottom: 30px;
-    color: #333;
+.topics-list {
+    text-align: center;
 }
 
-.theory-container p {
-    font-size: 1.2rem;
-    line-height: 1.6;
-    color: #555;
-    max-width: 900px;
-    margin: 0 auto;
+.topics-list ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px; /* Отступы между кнопками */
+}
+
+.topic-btn {
+    width: 250px;
+    height: 60px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 1rem;
+    color: white;
+    transition: all 0.2s ease;
+    user-select: none;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #167C80;
+    animation: bounce 1s infinite alternate;
+    text-decoration: none;
+}
+
+.topic-btn:hover {
+    background-color: #F03F35;
+    transform: translateY(-3px);
+    color: white;
+}
+
+@keyframes bounce {
+    from {
+        transform: translateY(0);
+    }
+    to {
+        transform: translateY(-10px);
+    }
 }

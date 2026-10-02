@@ -1,0 +1,101 @@
+/* index.css */
+
+/* Глобальные переменные */
+:root {
+    --primary: #167c80;
+    --primary-dark: #167c80;
+    --text-dark: #000000;
+    --text-light: #ffffff;
+    --bg-light: #ffffff;
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+    font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+    line-height: 1.5;
+    font-weight: 400;
+    color-scheme: light dark;
+
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Базовые стили для body */
+body {
+    margin: 0;
+    padding: 0;
+    background-color: var(--bg-light); /* Используем переменную */
+    color: var(--text-dark); /* Используем переменную */
+    font-family: inherit;
+}
+
+/* Стили для ссылок */
+a {
+    font-weight: 500;
+    color: var(--primary);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    color: var(--primary-dark);
+}
+
+/* Стили для заголовков */
+h1 {
+    font-size: 3.2em;
+    line-height: 1.1;
+    color: var(--primary); /* Используем переменную */
+}
+
+
+/* Стили для кнопок */
+button {
+    border-radius: 8px;
+    border: 1px solid transparent;
+    padding: 0.6em 1.2em;
+    font-size: 1em;
+    font-weight: 500;
+    font-family: inherit;
+    background-color: var(--primary);
+    color: var(--text-light);
+    cursor: pointer;
+    transition: background-color 0.25s ease;
+}
+
+button:hover {
+    background-color: var(--primary-dark);
+}
+
+button:focus,
+button:focus-visible {
+    outline: 4px auto -webkit-focus-ring-color;
+}
+
+/* Медиазапросы для светлой темы */
+@media (prefers-color-scheme: light) {
+    :root {
+        --text-dark: #213547;
+        --bg-light: #ffffff;
+    }
+
+    a:hover {
+        color: #f03f35;
+    }
+
+    button {
+        background-color: #f9f9f9;
+    }
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+}
+
+/* Подключение Tailwind CSS */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;

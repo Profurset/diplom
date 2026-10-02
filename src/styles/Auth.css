@@ -1,21 +1,50 @@
-/* Login.css & Register.css */
-
+/* Градиентный фон */
 .auth-container {
+    position: relative;
+    min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
-    background: linear-gradient(135deg, #5c6bc0, #3f51b5);
+    padding: 40px 20px;
+    box-sizing: border-box;
 }
 
+.auth-container::before {
+    content: "";
+    position: fixed;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(-45deg, #167C80, #B7E3E4, #f03f35, #B7E3E4, #167C80);
+    background-size: 400% 400%;
+    animation: gradientBG 15s ease infinite;
+    z-index: -1;
+    filter: blur(1px);
+}
+
+@keyframes gradientBG {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Glassmorphism форма */
 .auth-form {
-    background-color: white;
-    padding: 30px;
-    border-radius: 15px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+    border-radius: 20px;
+    padding: 40px 50px;
     width: 100%;
     max-width: 400px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    margin: auto;
+    color: #000000;
+    text-align: center;
+    transition: transform 0.3s ease;
+    font-family: 'Segoe UI', sans-serif;
+    position: relative;
 }
 
 .auth-form:hover {
@@ -23,61 +52,89 @@
 }
 
 .auth-form h2 {
-    font-size: 2rem;
-    color: #213547;
-    text-align: center;
-    margin-bottom: 20px;
+    font-size: 1.8rem;
+    margin-bottom: 25px;
     font-weight: bold;
+    color: #000000;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
-.auth-form input {
-    width: 100%;
-    padding: 15px;
-    margin: 10px 0;
-    border: 1px solid #ccc;
-    border-radius: 10px;
+/* Сообщение об ошибке */
+.error {
+    color: #ff4d4d;
+    font-weight: bold;
+    margin-bottom: 15px;
     font-size: 1rem;
-    transition: border-color 0.3s ease;
+    text-align: center;
+}
+
+/* Поля ввода */
+.auth-form input[type="email"],
+.auth-form input[type="password"] {
+    width: 100%;
+    max-width: 100%;
+    padding: 14px 16px;
+    margin: 10px 0;
+    border: none;
+    border-radius: 10px;
+    background-color: rgba(255, 255, 255, 0.2);
+    color: #000000 !important;
+    font-size: 1rem;
+    outline: none;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+    font-family: inherit;
+}
+
+.auth-form input::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+    font-weight: normal;
 }
 
 .auth-form input:focus {
-    border-color: #5c6bc0;
-    outline: none;
+    background-color: rgba(255, 255, 255, 0.25);
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.3);
 }
 
-.auth-form button {
-    width: 100%;
-    padding: 15px;
-    background-color: #5c6bc0;
+/* Кнопка отправки */
+.btn-submit {
+    width: 80%;
+    max-width: 320px;
+    margin: 15px auto 10px;
+    padding: 14px;
+    background-color: #167C80;
     color: white;
     border: none;
     border-radius: 10px;
-    font-size: 1.2rem;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-}
-
-.auth-form button:hover {
-    background-color: #3f51b5;
-    transform: scale(1.05);
-}
-
-.auth-form p {
-    color: red;
-    text-align: center;
-    margin-top: 10px;
     font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: block;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
-.auth-form .link {
+.btn-submit:hover {
+    background-color: #f03f35;
+    transform: scale(1.02);
+}
+
+/* Ссылка внутри формы */
+.link-toggle {
+    margin-top: 20px;
+    font-size: 0.95rem;
+    color: #000000;
     text-align: center;
-    margin-top: 10px;
-    font-size: 0.9rem;
-    color: #5c6bc0;
-    text-decoration: none;
+}
+
+.link-toggle .link {
+    display: inline-block;
+    color: #000000;
+    text-decoration: underline;
+    cursor: pointer;
     transition: color 0.3s ease;
 }
 
-.auth-form .link:hover {
-    color: #3f51b5;
+.link-toggle .link:hover {
+    color: #f03f35;
 }
